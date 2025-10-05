@@ -3,6 +3,7 @@
   "short_name": "VIA",
   "description": "Avatares desde tus fotos. Free con marca de agua + 5 créditos limpios de bienvenida.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0b0f1a",
   "theme_color": "#0d47a1",
@@ -49,6 +50,5 @@
         ]
       }
     }
-  ],
-  "scope": "./"
+  ]
 }

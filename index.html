@@ -6,31 +6,33 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#0d47a1" />
   <title>Función VIA — Avatars</title>
-  <link rel="icon" sizes="192x192" href="assets/logo.png">
-  <link rel="apple-touch-icon" href="assets/logo.png">
-  <meta name="description" content="Avatares desde tus fotos. Free con marca de agua + 5 créditos limpios de bienvenida.">
+  <link rel="icon" sizes="192x192" href="./assets/logo.png">
+  <link rel="apple-touch-icon" href="./assets/logo.png">
+  <meta name="description" content="Free: ilimitado con marca + 5 créditos sin marca. Límite 10/día.">
   <style>
+    *{box-sizing:border-box}
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0b0f1a;color:#eceff1}
-    header{padding:16px; display:flex; gap:12px; align-items:center; border-bottom:1px solid #1e2742; position:sticky; top:0; background:#0b0f1a}
+    header{padding:16px; display:flex; gap:12px; align-items:center; border-bottom:1px solid #1e2742; position:sticky; top:0; background:#0b0f1a; z-index:10}
     header img{width:36px; height:36px; border-radius:8px}
     h1{font-size:18px; margin:0}
     main{max-width:960px; margin:0 auto; padding:20px}
     .card{background:#121a2b; border:1px solid #1e2742; border-radius:16px; padding:16px; box-shadow:0 4px 24px rgba(0,0,0,.25)}
     .grid{display:grid; gap:16px}
-    .actions{display:flex; gap:12px; flex-wrap:wrap}
+    .actions{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .btn{background:#1a73e8; color:#fff; border:none; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:600}
     .btn.secondary{background:#23304d}
     .hint{color:#9fb3c8; font-size:14px}
     #counter{font-weight:700}
-    canvas{max-width:100%; background:#0b0f1a; border-radius:12px; border:1px dashed #2b3a64}
-    footer{padding:24px; text-align:center; color:#9fb3c8}
-    input[type=file]{display:none}
-    label.file{display:inline-block; padding:12px 16px; border:1px dashed #2b3a64; border-radius:12px; cursor:pointer}
-    .badge{background:#23304d; padding:4px 10px; border-radius:999px; font-size:12px; color:#cfe0ff; display:inline-flex; align-items:center; justify-content:center; height:28px}
+    .badge{background:#23304d; padding:4px 10px; border-radius:999px; font-size:12px; color:#cfe0ff; display:inline-flex; align-items:center; justify-content:center; height:28px; min-width:86px; text-align:center}
     .toast{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:#23304d; color:#fff; padding:10px 14px; border-radius:10px; display:none}
     .plan{display:inline-block; padding:4px 8px; border-radius:8px; background:#23304d; margin-left:4px; font-size:12px}
-    .canvas-wrap{position:relative; display:inline-block}
-    .fab{position:absolute; right:12px; bottom:12px; width:48px; height:48px; border:none; border-radius:999px; background:#1a73e8; color:#fff; font-weight:800; font-size:20px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    canvas{max-width:100%; background:#0b0f1a; border-radius:12px; border:1px dashed #2b3a64}
+    input[type=file]{display:none}
+    label.file{display:inline-block; padding:12px 16px; border:1px dashed #2b3a64; border-radius:12px; cursor:pointer; background:#121a2b}
+    .canvas-wrap{position:relative}
+    .fab{position:absolute; right:14px; bottom:14px; width:56px; height:56px; border-radius:999px; border:none; background:#1a73e8; color:#fff; font-size:26px; font-weight:800; cursor:pointer; box-shadow:0 6px 22px rgba(0,0,0,.35)}
+    footer{padding:24px; text-align:center; color:#9fb3c8}
+    a{color:#8ab4ff}
   </style>
 </head>
 <body>
@@ -47,27 +49,28 @@
       <div class="actions">
         <label for="file" class="file">Elegir foto</label>
         <input id="file" type="file" accept="image/*" />
-        <button id="install" class="btn secondary">Instalar App</button>
+        <button id="install" class="btn secondary" disabled>Instalar App</button>
         <a class="btn" href="./subscribe.html">Subirme a PRO</a>
         <span class="badge" id="installedBadge" hidden>Instalada</span>
+        <span class="hint" id="installHelp" style="display:none">Menú ⋮ → Instalar aplicación</span>
       </div>
       <p class="hint">Tip: en Android compartí una foto directo a “Función VIA” (PWA como destino de compartir).</p>
       <p class="hint">Hoy te quedan en Free: <span id="dailyLeft">10</span> de 10.</p>
       <div class="canvas-wrap">
-  <canvas id="canvas" width="960" height="960" aria-label="Vista previa del avatar"></canvas>
-  <button id="dl" class="fab" aria-label="Descargar PNG" title="Descargar PNG">⇩</button>
-</div>
-<div class="actions"><button id="dl2" class="btn secondary">Descargar PNG</button></div>
+        <canvas id="canvas" width="960" height="960" aria-label="Vista previa del avatar"></canvas>
+        <button id="dl" class="fab" aria-label="Descargar PNG" title="Descargar PNG">⇩</button>
+      </div>
+      <div class="actions" style="margin-top:10px"><button id="dl2" class="btn secondary">Descargar PNG</button></div>
     </section>
 
     <section class="card">
       <h2 style="margin-top:0">Cómo funciona</h2>
       <ol>
         <li>Subí o compartí una foto.</li>
-        <li>Generamos el avatar. En Free lleva marca de agua (a menos que tengas créditos limpios).</li>
-        <li>Tocá el canvas para descargar.</li>
+        <li>En Free el avatar lleva marca de agua (salvo créditos limpios).</li>
+        <li>Descargá el PNG con el botón.</li>
       </ol>
-      <p class="hint">Esta demo procesa localmente. Para producción se valida suscripción en servidor.</p>
+      <p class="hint">Esta demo procesa localmente. Producción: validación de suscripción en servidor.</p>
     </section>
   </main>
 
@@ -81,7 +84,7 @@
   <script src="./install.js"></script>
   <script src="./app.js"></script>
   <script>
-if ('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+    if ('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
   </script>
 </body>
 </html>

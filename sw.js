@@ -1,5 +1,5 @@
-// sw.js — service worker
-const CACHE = 'via-cache-v2';
+// sw.js — cache básico con rutas relativas
+const CACHE = 'via-cache-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -12,7 +12,6 @@ const ASSETS = [
   './manifest.webmanifest',
   './assets/logo.png'
 ];
-
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
 });

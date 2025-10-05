@@ -1,13 +1,12 @@
-// app.js — HÍBRIDO: Free con marca de agua + 5 créditos limpios + 10/día
-const WELCOME_CLEAN = 5;     // créditos sin marca de bienvenida
-const FREE_DAILY = 10;       // límite diario en Free
-const CANVAS_SIZE = 960;
+// app.js — HÍBRIDO limpio (Free con marca + 5 limpios + 10/día)
+const WELCOME_CLEAN = 5;
+const FREE_DAILY = 10;
 
 const KEYS = {
   usesDay: 'via_free_day_count',
   usesDayDate: 'via_free_day_date',
   clean: 'via_clean_credits',
-  plan: 'via_plan', // 'free' | 'pro' | 'creator'
+  plan: 'via_plan',
 };
 
 function todayStr(){
@@ -66,10 +65,10 @@ function showToast(msg){
 }
 
 function updateUI(){
-  document.getElementById('dailyLeft').textContent = String(getDailyLeft());
-  document.getElementById('cleanLeft').textContent = String(getCleanCredits());
+  const d = document.getElementById('dailyLeft'); if (d) d.textContent = String(getDailyLeft());
+  const c = document.getElementById('cleanLeft'); if (c) c.textContent = String(getCleanCredits());
   const plan = localStorage.getItem(KEYS.plan);
-  document.getElementById('planTag').textContent = plan === 'pro' ? 'PRO' : (plan === 'creator' ? 'Creator+' : 'Free');
+  const pt = document.getElementById('planTag'); if (pt) pt.textContent = plan === 'pro' ? 'PRO' : (plan === 'creator' ? 'Creator+' : 'Free');
 }
 
 function blockedFree(){
@@ -82,16 +81,13 @@ function blockedFree(){
 }
 
 function applyAvatarEffect(ctx, canvas, img){
-  // Fondo
   ctx.fillStyle = '#0b0f1a';
   ctx.fillRect(0,0,canvas.width, canvas.height);
 
-  // Fit image square
   const size = Math.min(img.width, img.height);
   const sx = (img.width - size)/2;
   const sy = (img.height - size)/2;
 
-  // Marco redondeado
   const r = canvas.width * 0.18;
   ctx.save();
   ctx.beginPath();
@@ -103,10 +99,8 @@ function applyAvatarEffect(ctx, canvas, img){
   ctx.closePath();
   ctx.clip();
 
-  // Imagen
   ctx.drawImage(img, sx, sy, size, size, 0, 0, canvas.width, canvas.height);
 
-  // Bloom suave
   ctx.restore();
   ctx.save();
   ctx.globalCompositeOperation = 'overlay';
@@ -117,14 +111,12 @@ function applyAvatarEffect(ctx, canvas, img){
   ctx.fillRect(0,0,canvas.width, canvas.height);
   ctx.restore();
 
-  // Borde blanco
   ctx.lineWidth = 12;
   ctx.strokeStyle = 'rgba(255,255,255,0.9)';
   ctx.strokeRect(6,6,canvas.width-12, canvas.height-12);
 }
 
 function drawWatermark(ctx, canvas){
-  // Marca diagonal VIA + URL
   const text = 'VIA • iajujuy.github.io/fi-via';
   ctx.save();
   ctx.translate(canvas.width/2, canvas.height/2);
@@ -135,7 +127,6 @@ function drawWatermark(ctx, canvas){
   ctx.fillText(text, 0, 0);
   ctx.restore();
 
-  // Mini sello abajo
   ctx.save();
   ctx.font = '600 28px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.9)';
@@ -177,7 +168,6 @@ function renderFromFile(file){
   reader.readAsDataURL(file);
 }
 
-
 function downloadCanvas(){
   const canvas = document.getElementById('canvas');
   const a = document.createElement('a');
@@ -186,16 +176,19 @@ function downloadCanvas(){
   a.click();
 }
 
+function hideInstallUI(){
+  const btn = document.getElementById('install');
+  if (btn){ btn.disabled = true; btn.style.opacity = 0.65; }
+  const b = document.getElementById('installedBadge');
+  if (b) b.hidden = false;
+}
+
 function setup(){
   initDefaults();
   updateUI();
 
-  // Instalación
-  if (window.matchMedia('(display-mode: standalone)').matches){
-    document.getElementById('installedBadge').hidden = false;
-  }
+  if (window.matchMedia('(display-mode: standalone)').matches){ hideInstallUI(); }
 
-  // File input
   const input = document.getElementById('file');
   input.addEventListener('change', ()=>{
     if (!isPro() && blockedFree()) return;
@@ -203,12 +196,11 @@ function setup(){
     if (file) renderFromFile(file);
   });
 
-  // Download buttons
   const canvas = document.getElementById('canvas');
-  canvas.addEventListener('click', downloadCanvas);
   const dl = document.getElementById('dl');
-  if (dl) dl.addEventListener('click', (e)=>{ e.preventDefault(); downloadCanvas(); });
   const dl2 = document.getElementById('dl2');
+  canvas.addEventListener('click', downloadCanvas);
+  if (dl) dl.addEventListener('click', (e)=>{ e.preventDefault(); downloadCanvas(); });
   if (dl2) dl2.addEventListener('click', (e)=>{ e.preventDefault(); downloadCanvas(); });
 }
 
