@@ -22,13 +22,15 @@
     .btn.secondary{background:#23304d}
     .hint{color:#9fb3c8; font-size:14px}
     #counter{font-weight:700}
-    canvas{max-width:100%; background:#0b0f1a; border-radius:12px; border:1px dashed #2b3a64; cursor:pointer}
+    canvas{max-width:100%; background:#0b0f1a; border-radius:12px; border:1px dashed #2b3a64}
     footer{padding:24px; text-align:center; color:#9fb3c8}
     input[type=file]{display:none}
     label.file{display:inline-block; padding:12px 16px; border:1px dashed #2b3a64; border-radius:12px; cursor:pointer}
-    .badge{background:#23304d; padding:4px 8px; border-radius:999px; font-size:12px; color:#cfe0ff}
+    .badge{background:#23304d; padding:4px 10px; border-radius:999px; font-size:12px; color:#cfe0ff; display:inline-flex; align-items:center; justify-content:center; height:28px}
     .toast{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:#23304d; color:#fff; padding:10px 14px; border-radius:10px; display:none}
     .plan{display:inline-block; padding:4px 8px; border-radius:8px; background:#23304d; margin-left:4px; font-size:12px}
+    .canvas-wrap{position:relative; display:inline-block}
+    .fab{position:absolute; right:12px; bottom:12px; width:48px; height:48px; border:none; border-radius:999px; background:#1a73e8; color:#fff; font-weight:800; font-size:20px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.35)}
   </style>
 </head>
 <body>
@@ -51,7 +53,11 @@
       </div>
       <p class="hint">Tip: en Android compartí una foto directo a “Función VIA” (PWA como destino de compartir).</p>
       <p class="hint">Hoy te quedan en Free: <span id="dailyLeft">10</span> de 10.</p>
-      <canvas id="canvas" width="960" height="960" aria-label="Vista previa del avatar" title="Tocá para descargar PNG"></canvas>
+      <div class="canvas-wrap">
+  <canvas id="canvas" width="960" height="960" aria-label="Vista previa del avatar"></canvas>
+  <button id="dl" class="fab" aria-label="Descargar PNG" title="Descargar PNG">⇩</button>
+</div>
+<div class="actions"><button id="dl2" class="btn secondary">Descargar PNG</button></div>
     </section>
 
     <section class="card">
