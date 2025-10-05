@@ -177,13 +177,22 @@ function renderFromFile(file){
   reader.readAsDataURL(file);
 }
 
+
+function downloadCanvas(){
+  const canvas = document.getElementById('canvas');
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'via-avatar.png';
+  a.click();
+}
+
 function setup(){
   initDefaults();
   updateUI();
 
   // Instalación
   if (window.matchMedia('(display-mode: standalone)').matches){
-    document.getElementById('installedBadge').hidden = False;
+    document.getElementById('installedBadge').hidden = false;
   }
 
   // File input
@@ -194,14 +203,13 @@ function setup(){
     if (file) renderFromFile(file);
   });
 
-  // Download on click
+  // Download buttons
   const canvas = document.getElementById('canvas');
-  canvas.addEventListener('click', ()=>{
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = 'via-avatar.png';
-    a.click();
-  });
+  canvas.addEventListener('click', downloadCanvas);
+  const dl = document.getElementById('dl');
+  if (dl) dl.addEventListener('click', (e)=>{ e.preventDefault(); downloadCanvas(); });
+  const dl2 = document.getElementById('dl2');
+  if (dl2) dl2.addEventListener('click', (e)=>{ e.preventDefault(); downloadCanvas(); });
 }
 
 window.addEventListener('DOMContentLoaded', setup);
