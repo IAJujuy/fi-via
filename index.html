@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0d47a1" />
+  <title>Función VIA — Avatars</title>
+  <link rel="icon" sizes="192x192" href="./assets/logo.png">
+  <link rel="apple-touch-icon" href="./assets/logo.png">
+  <meta name="description" content="Free: ilimitado con marca + 5 créditos sin marca. Límite 10/día.">
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0b0f1a;color:#eceff1}
+    header{padding:16px; display:flex; gap:12px; align-items:center; border-bottom:1px solid #1e2742; position:sticky; top:0; background:#0b0f1a; z-index:10}
+    header img{width:36px; height:36px; border-radius:8px}
+    h1{font-size:18px; margin:0}
+    main{max-width:960px; margin:0 auto; padding:20px}
+    .card{background:#121a2b; border:1px solid #1e2742; border-radius:16px; padding:16px; box-shadow:0 4px 24px rgba(0,0,0,.25)}
+    .grid{display:grid; gap:16px}
+    .actions{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .btn{background:#1a73e8; color:#fff; border:none; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:600}
+    .btn.secondary{background:#23304d}
+    .hint{color:#9fb3c8; font-size:14px}
+    .badge{background:#23304d; padding:4px 10px; border-radius:999px; font-size:12px; color:#cfe0ff; display:inline-flex; align-items:center; justify-content:center; height:28px; min-width:86px; text-align:center}
+    .toast{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:#23304d; color:#fff; padding:10px 14px; border-radius:10px; display:none}
+    .plan{display:inline-block; padding:4px 8px; border-radius:8px; background:#23304d; margin-left:4px; font-size:12px}
+    canvas{max-width:100%; background:#0b0f1a; border-radius:12px; border:1px dashed #2b3a64}
+    input[type=file]{display:none}
+    label.file{display:inline-block; padding:12px 16px; border:1px dashed #2b3a64; border-radius:12px; cursor:pointer; background:#121a2b}
+    .canvas-wrap{position:relative}
+    .fab{position:absolute; right:14px; bottom:14px; width:56px; height:56px; border-radius:999px; border:none; background:#1a73e8; color:#fff; font-size:26px; font-weight:800; cursor:pointer; box-shadow:0 6px 22px rgba(0,0,0,.35)}
+    footer{padding:24px; text-align:center; color:#9fb3c8}
+    a{color:#8ab4ff}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="./assets/logo.png" alt="VIA">
+    <div>
+      <h1>Función VIA <span id="planTag" class="plan">Free</span></h1>
+      <div class="hint">Free: ilimitado con marca de agua + <b id="cleanLeft">5</b> créditos sin marca (bienvenida). Límite: 10/día.</div>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <div class="actions">
+        <label for="file" class="file">Elegir foto</label>
+        <input id="file" type="file" accept="image/*" />
+        <button id="install" class="btn secondary" disabled>Instalar App</button>
+        <a class="btn" href="./subscribe.html">Subirme a PRO</a>
+        <span class="badge" id="installedBadge" hidden>Instalada</span>
+        <span class="hint" id="installHelp" style="display:none">Menú ⋮ → Instalar aplicación</span>
+      </div>
+      <p class="hint">Tip: en Android compartí una foto directo a “Función VIA” una vez instalada (aparece en el menú Compartir).</p>
+      <p class="hint">Hoy te quedan en Free: <span id="dailyLeft">10</span> de 10.</p>
+      <div class="canvas-wrap">
+        <canvas id="canvas" width="960" height="960" aria-label="Vista previa del avatar"></canvas>
+        <button id="dl" class="fab" aria-label="Descargar PNG" title="Descargar PNG">⇩</button>
+      </div>
+      <div class="actions" style="margin-top:10px"><button id="dl2" class="btn secondary">Descargar PNG</button></div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Cómo funciona</h2>
+      <ol>
+        <li>Subí o compartí una foto.</li>
+        <li>Aplicamos efecto avatar (posterizado + bordes).</li>
+        <li>Descargá el PNG con el botón.</li>
+      </ol>
+      <p class="hint">Demo local. Producción: validación de suscripción en servidor + conteo en cuenta.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="./pricing.html">Ver planes</a> · <a href="./success.html">Verificar suscripción</a> · <a href="./cancel.html">Cancelar</a>
+    <div class="hint">© Función VIA • PWA demo</div>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="./install.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+  </script>
+</body>
+</html>
