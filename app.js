@@ -125,7 +125,7 @@ function applyAvatarEffect(ctx, canvas, img){
 
 function drawWatermark(ctx, canvas){
   // Marca diagonal VIA + URL
-  const text = 'VIA • via.example';
+  const text = 'VIA • iajujuy.github.io/fi-via';
   ctx.save();
   ctx.translate(canvas.width/2, canvas.height/2);
   ctx.rotate(-Math.PI/6);
